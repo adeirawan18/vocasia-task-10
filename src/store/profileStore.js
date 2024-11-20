@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getProfile } from "../api/network";
+import { getProfile } from "../network/network";
 
 const initialState = {
   profile: null,

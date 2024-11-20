@@ -20,8 +20,9 @@ const Home = () => {
   const completeTasks = tasks.filter((task) => task.isDone);
 
   const handleEditProfile = () => {
-    navigate("/edit-profile"); // Navigate to edit profile page
+    navigate("/edit-profile"); // Navigate ke halaman Edit Profil
   };
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 flex flex-col justify-center items-center p-8">

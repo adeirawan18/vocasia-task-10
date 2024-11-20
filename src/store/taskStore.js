@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { createTask, getAllTask } from "../api/network";
+import { createTask, getAllTask } from "../network/network";
 
 const initialState = {
   tasks: [],

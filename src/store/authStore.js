@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { login as httpLogin } from "../api/network";
+import { login as httpLogin } from "../network/network";
 
 const initialState = {
   token: null,
