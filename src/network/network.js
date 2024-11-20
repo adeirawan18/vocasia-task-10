@@ -95,13 +95,13 @@ export const getProfile = async () => {
 };
 
 export const toggleTaskStatus = async (taskId) => {
-  const url = `${BASE_API_URL}/api/tasks/${taskId}/done`; // Endpoint sesuai spesifikasi
+  const url = `${BASE_API_URL}/api/tasks/${taskId}/done`; 
   try {
     const response = await fetch(url, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json", // Tambahkan jika server membutuhkan
-        Authorization: `Bearer ${useAuthStore.getState().token}`, // Pastikan token valid
+        "Content-Type": "application/json", 
+        Authorization: `Bearer ${useAuthStore.getState().token}`, 
       },
     });
 
@@ -112,7 +112,7 @@ export const toggleTaskStatus = async (taskId) => {
     return await response.json();
   } catch (error) {
     console.error("Error toggling task status:", error.message);
-    throw error; // Propagasi error untuk penanganan lebih lanjut
+    throw error; 
   }
 };
 

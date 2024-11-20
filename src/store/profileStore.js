@@ -11,19 +11,19 @@ export const useProfileStore = create((set) => ({
   ...initialState,
   getProfile: async () => {
     try {
-      set({ isLoading: true, error: null }); // Set isLoading ke true saat mulai
-      const { data } = await getProfile(); // Pemanggilan API
-      set({ profile: data, error: null }); // Simpan profil dan reset error
+      set({ isLoading: true, error: null }); 
+      const { data } = await getProfile(); 
+      set({ profile: data, error: null }); 
     } catch (error) {
-      console.error("Failed to fetch profile:", error); // Logging untuk debugging
+      console.error("Failed to fetch profile:", error); 
       set({
         error: error.response?.data?.message || "Gagal mengambil data profil.",
-      }); // Simpan pesan error
+      }); 
     } finally {
-      set({ isLoading: false }); // Set isLoading ke false
+      set({ isLoading: false }); 
     }
   },
   reset: () => {
-    set(initialState); // Reset state
+    set(initialState); 
   },
 }));

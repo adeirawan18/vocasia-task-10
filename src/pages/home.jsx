@@ -13,14 +13,14 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getTasks(); // Fetch tasks on component mount
+    getTasks(); 
   }, [getTasks]);
 
   const incompleteTasks = tasks.filter((task) => !task.isDone);
   const completeTasks = tasks.filter((task) => task.isDone);
 
   const handleEditProfile = () => {
-    navigate("/edit-profile"); // Navigate to edit profile page
+    navigate("/edit-profile");
   };
 
   const handleToggleTask = async (taskId) => {
@@ -66,7 +66,6 @@ const Home = () => {
         </div>
 
         <div className="space-y-8">
-          {/* Incomplete Tasks */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-primary">Incomplete Tasks</h2>
             {incompleteTasks.length > 0 ? (
@@ -107,7 +106,7 @@ const Home = () => {
             )}
           </div>
 
-          {/* Completed Tasks */}
+
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-primary">Completed Tasks</h2>
             {completeTasks.length > 0 ? (

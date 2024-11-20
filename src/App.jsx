@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './pages/login';
 import Home from './pages/home';
-import EditProfil from './pages/editProfile'; // Import halaman edit profil
+import EditProfil from './pages/editProfile';
 import { ProtectedRoute } from './components/authGuard';
 import { useAuthStore } from './store/authStore';
 import { useProfileStore } from './store/profileStore';
@@ -24,7 +24,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
-        {/* Protected routes. Only authenticated users can access */}
         <Route
           path="/"
           element={

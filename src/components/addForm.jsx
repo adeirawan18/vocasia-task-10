@@ -2,34 +2,40 @@ import { useState } from "react";
 import { useTaskStore } from "../store/taskStore";
 
 export const AddForm = () => {
-        const createTask = useTaskStore((state) => state.createTask);
-        const [title, setTitle] = useState("");
+  const [taskTitle, setTaskTitle] = useState("");
+  const createTaskHandler = useTaskStore((state) => state.createTask);
 
-        const addTask = (event) => {
-        event.preventDefault();
-        const trimmedTitle = title.trim();
-        if (trimmedTitle === "") {
-          alert("Please enter a task");
-          return;
-        }
-        createTask(trimmedTitle);
-        setTitle("");
-      };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const sanitizedTitle = taskTitle.trim();
 
-    return (
-        <div className="flex items-center gap-2 mb-16">
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Add a new task"
-          className="input input-bordered w-full border-purple-500 text-black bg-gray-200 text-base-content"
+    if (!sanitizedTitle) {
+      alert("Task title cannot be empty!");
+      return;
+    }
 
-        />
-        <button onClick={addTask} className="btn btn-primary">
-          +
-        </button>
-      </div>
-    );
+    createTaskHandler(sanitizedTitle);
+    setTaskTitle(""); // Clear input field
   };
 
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="flex items-center gap-4 mb-6"
+    >
+      <input
+        type="text"
+        value={taskTitle}
+        onChange={(e) => setTaskTitle(e.target.value)}
+        placeholder="Enter a task"
+        className="flex-1 px-4 py-2 border rounded-lg bg-gray-100 text-black border-blue-500 focus:outline-none focus:ring focus:ring-blue-300"
+      />
+      <button
+        type="submit"
+        className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+      >
+        Add
+      </button>
+    </form>
+  );
+};
