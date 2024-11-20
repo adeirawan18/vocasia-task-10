@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { createTask, getAllTask } from "../network/network";
+import { createTask, getAllTask, toggleTaskStatus as toggleTaskStatusAPI, deleteTask as deleteTaskAPI } from "../network/network"; 
 
 const initialState = {
   tasks: [],
@@ -8,27 +8,44 @@ const initialState = {
 };
 
 export const useTaskStore = create((set, get) => ({
-  ...initialState,
-  createTask: async (title) => {
-    try {
-      set({ error: null });
-      await createTask(title);
-      await get().getTasks();
-    } catch (error) {
-      set({ error });
-    }
-  },
+  tasks: [],
+  error: null,
+  isLoading: false,
+
   getTasks: async () => {
     try {
-      set({ isLoading: false, error: null });
-
+      set({ isLoading: true, error: null });
       const { data } = await getAllTask();
-      console.log("data", data);
       set({ tasks: data });
     } catch (error) {
+      console.error("Error fetching tasks:", error.message);
       set({ error });
     } finally {
       set({ isLoading: false });
+    }
+  },
+
+  toggleTaskStatus: async (taskId) => {
+    try {
+      const updatedTask = await axios.put(`/api/tasks/${taskId}/toggle`);
+      set((state) => ({
+        tasks: state.tasks.map((task) =>
+          task.id === taskId ? { ...task, isDone: updatedTask.data.isDone } : task
+        ),
+      }));
+    } catch (error) {
+      console.error('Failed to toggle task status:', error.message);
+    }
+  },
+
+  deleteTask: async (taskId) => {
+    try {
+      await axios.delete(`/api/tasks/${taskId}`);
+      set((state) => ({
+        tasks: state.tasks.filter((task) => task.id !== taskId),
+      }));
+    } catch (error) {
+      console.error('Failed to delete task:', error.message);
     }
   },
 }));

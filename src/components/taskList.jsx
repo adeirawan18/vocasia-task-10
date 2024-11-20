@@ -21,13 +21,11 @@ export const TaskList = ({ title, tasks, onToggleTask, onDeleteTask }) => {
                   onClick={() => onToggleTask(task._id)}
                   className="btn btn-ghost btn-sm text-primary"
                 >
-                  ✓
                 </button>
                 <button
                   onClick={() => onDeleteTask(task._id)}
                   className="btn btn-ghost btn-sm text-error"
                 >
-                  🗑
                 </button>
               </div>
             )}

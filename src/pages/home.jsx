@@ -9,20 +9,36 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const logout = useAuthStore((state) => state.logout);
   const profile = useProfileStore((state) => state.profile);
-  const { tasks, getTasks, toggleTask, deleteTask } = useTaskStore();
+  const { tasks, getTasks, toggleTaskStatus, deleteTask } = useTaskStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    getTasks(); // Mengambil data task
+    getTasks(); // Fetch tasks on component mount
   }, [getTasks]);
 
   const incompleteTasks = tasks.filter((task) => !task.isDone);
   const completeTasks = tasks.filter((task) => task.isDone);
 
   const handleEditProfile = () => {
-    navigate("/edit-profile"); // Navigate ke halaman Edit Profil
+    navigate("/edit-profile"); // Navigate to edit profile page
   };
-  
+
+  const handleToggleTask = async (taskId) => {
+    try {
+      await toggleTaskStatus(taskId);
+      console.log(`Task with ID ${taskId} marked as done.`);
+    } catch (error) {
+      console.error("Failed to toggle task status:", error.message);
+    }
+  };
+  const handleDeleteTask = async (taskId) => {
+    try {
+      await deleteTask(taskId);
+      console.log(`Task with ID ${taskId} deleted successfully.`);
+    } catch (error) {
+      console.error("Failed to delete task:", error.message);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 flex flex-col justify-center items-center p-8">
@@ -45,18 +61,16 @@ const Home = () => {
           />
         </div>
 
-        {/* Input Form with modified style */}
         <div className="mb-6">
           <AddForm />
         </div>
 
-        {/* Task Lists */}
         <div className="space-y-8">
           {/* Incomplete Tasks */}
-          <div className="">
+          <div className="space-y-4">
             <h2 className="text-xl font-semibold text-primary">Incomplete Tasks</h2>
-            <div className="space-y-4 mt-4">
-              {incompleteTasks.map((task) => (
+            {incompleteTasks.length > 0 ? (
+              incompleteTasks.map((task) => (
                 <div
                   key={task.id}
                   className="flex justify-between items-center bg-gray-200 p-4 rounded-lg border border-purple-500"
@@ -65,7 +79,7 @@ const Home = () => {
                     <input
                       type="checkbox"
                       checked={task.isDone}
-                      onChange={() => toggleTask(task.id)}
+                      onChange={() => handleToggleTask(task.id)}
                       className="text-purple-500"
                     />
                     <p className={`flex-1 ${task.isDone ? "line-through text-gray-500" : "text-black"}`}>
@@ -73,31 +87,31 @@ const Home = () => {
                     </p>
                   </div>
                   <div className="flex gap-2">
-                    {/* Icon Centang */}
                     <button
-                      onClick={() => toggleTask(task.id)}
+                      onClick={() => handleToggleTask(task.id)}
                       className="text-green-500 hover:text-green-700 transition-colors"
                     >
                       <FiCheck size={20} />
                     </button>
-                    {/* Icon Tempat Sampah */}
                     <button
-                      onClick={() => deleteTask(task.id)}
+                      onClick={() => handleDeleteTask(task.id)}
                       className="text-red-500 hover:text-red-700 transition-colors"
                     >
                       <FiTrash2 size={20} />
                     </button>
                   </div>
                 </div>
-              ))}
-            </div>
+              ))
+            ) : (
+              <p className="text-gray-500">No incomplete tasks yet.</p>
+            )}
           </div>
 
           {/* Completed Tasks */}
-          <div className="">
+          <div className="space-y-4">
             <h2 className="text-xl font-semibold text-primary">Completed Tasks</h2>
-            <div className="space-y-4 mt-4">
-              {completeTasks.map((task) => (
+            {completeTasks.length > 0 ? (
+              completeTasks.map((task) => (
                 <div
                   key={task.id}
                   className="flex justify-between items-center bg-gray-200 p-4 rounded-lg border border-purple-500"
@@ -106,7 +120,7 @@ const Home = () => {
                     <input
                       type="checkbox"
                       checked={task.isDone}
-                      onChange={() => toggleTask(task.id)}
+                      onChange={() => handleToggleTask(task.id)}
                       className="text-purple-500"
                     />
                     <p className={`flex-1 ${task.isDone ? "line-through text-gray-500" : "text-black"}`}>
@@ -114,24 +128,24 @@ const Home = () => {
                     </p>
                   </div>
                   <div className="flex gap-2">
-                    {/* Icon Centang */}
                     <button
-                      onClick={() => toggleTask(task.id)}
+                      onClick={() => handleToggleTask(task.id)}
                       className="text-green-500 hover:text-green-700 transition-colors"
                     >
                       <FiCheck size={20} />
                     </button>
-                    {/* Icon Tempat Sampah */}
                     <button
-                      onClick={() => deleteTask(task.id)}
+                      onClick={() => handleDeleteTask(task.id)}
                       className="text-red-500 hover:text-red-700 transition-colors"
                     >
                       <FiTrash2 size={20} />
                     </button>
                   </div>
                 </div>
-              ))}
-            </div>
+              ))
+            ) : (
+              <p className="text-gray-500">No completed tasks yet.</p>
+            )}
           </div>
         </div>
       </div>
