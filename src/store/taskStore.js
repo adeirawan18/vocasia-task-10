@@ -27,7 +27,7 @@ export const useTaskStore = create((set, get) => ({
 
   toggleTaskStatus: async (taskId) => {
     try {
-      const updatedTask = await axios.put(`/api/tasks/${taskId}/toggle`);
+      const updatedTask = await axios.put(`/api/tasks/${taskId}/done`);
       set((state) => ({
         tasks: state.tasks.map((task) =>
           task.id === taskId ? { ...task, isDone: updatedTask.data.isDone } : task
